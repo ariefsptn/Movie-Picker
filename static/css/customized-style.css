@@ -1,0 +1,23 @@
+#jumbotron {
+	background:rgba(255,255,255,0.8);
+}
+
+#body {
+	background:url('../img/body-bg.jpeg') no-repeat center center fixed;
+	background-size: cover;
+	filter:grayscale(0%);
+}
+
+#row {
+	background:rgba(255,255,255,0.8);
+}
+
+.vertical-center {
+	min-height: 100px;
+	display: flex;
+	align-items: center;
+}
+	
+.navbar{
+	margin-bottom: 0!important;
+}

@@ -65,7 +65,7 @@ func (this *SearchController) Post() {
 			auth.Genre3= "nil"
 			session.Set("Genre3",auth.Genre3)
 		}
-		x = models.IsAuthentic(auth.Minimum, auth.Mintahun, auth.Maxtahun, auth.Genre1, auth.Genre2, auth.Genre3)
+		x = models.SearchMovie(auth.Minimum, auth.Mintahun, auth.Maxtahun, auth.Genre1, auth.Genre2, auth.Genre3)
 		
 	}
 	
@@ -74,18 +74,22 @@ func (this *SearchController) Post() {
 	
 
 	if (x == nil) {
+		
 		this.TplName = "search-result-nil.tpl"
 	} else {
 	
 
 	n := rand.Int() % (len(x)-1)
-
+	session.Set("N",n)
 	this.Data["title"] = "Result"
 	this.Data["isi1"] = x[n].Judul_Film
 	this.Data["isi2"] = x[n].Durasi
 	this.Data["isi3"] = x[n].Tanggal_Tayang
 	this.Data["isi4"] = x[n].Rating
 	this.Data["isi5"] = x[n].Sinopsis
+
+	//this.Data["json"]=x
+	//this.ServeJSON()
 	this.TplName = "search-result.tpl"
 	}
 }

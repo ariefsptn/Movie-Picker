@@ -9,5 +9,6 @@ func init() {
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/search", &controllers.SearchController{})
 	beego.Router("/searcha", &controllers.SearchAgainController{})
+	beego.Router("/json", &controllers.JsonController{})
 	
 }

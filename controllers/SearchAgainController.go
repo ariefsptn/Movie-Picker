@@ -21,6 +21,8 @@ func (this *SearchAgainController) Get() {
 	
 	auth := Authentication{}
 
+
+	//Mengambil masukan dari SearchController
 	a := session.Get("Minimum").(int)
 	b := session.Get("Mintahun").(int)
 	c := session.Get("Maxtahun").(int)
@@ -34,19 +36,19 @@ func (this *SearchAgainController) Get() {
 	auth.Genre2 = e
 	auth.Genre3 = f
 	
-	x = models.IsAuthentic(auth.Minimum, auth.Mintahun, auth.Maxtahun, auth.Genre1, auth.Genre2, auth.Genre3)
+	x = models.SearchMovie(auth.Minimum, auth.Mintahun, auth.Maxtahun, auth.Genre1, auth.Genre2, auth.Genre3)
 	
 
 	
-	
+
 
 	if (x == nil) {
 		this.TplName = "search-result-nil.tpl"
 	} else {
 	
-	session.Set("Search",x)
-	n := rand.Int() % (len(x)-1)
 
+	n := rand.Int() % (len(x)-1)
+	session.Set("N",n)
 	this.Data["title"] = "Result"
 	this.Data["isi1"] = x[n].Judul_Film
 	this.Data["isi2"] = x[n].Durasi

@@ -10,7 +10,7 @@ type MainController struct {
 
 func (this *MainController) Get() {
 	this.Data["title"] = "Movies Picker!"
-	
+	//Masuk ke view index
 	this.TplName = "index.tpl"
 	
 }

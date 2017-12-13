@@ -10,26 +10,58 @@ import (
 
 
 
-func IsAuthentic( minimum int, mintahun int, maxtahun int, genre1 string, genre2 string, genre3 string) (result []*Film) {
+func SearchMovie( minimum int, mintahun int, maxtahun int, genre1 string, genre2 string, genre3 string) (result []*Film) {
 	var x []*Film
 	var f Film
-	//var w http.ResponseWriter
-
+	
 
 	//open connection
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/cinema_management_system")
+	db, err := sql.Open("mysql", "root:@tcp(167.205.67.251:3306)/cinema_management_system")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 	
-	//check if member exists
-	//var isAvailable bool
+	//mengubah masukan genre ke dalam format %genre%
 	newQuery := "%"+genre1+"%"
+	newQuery2 := "%"+genre2+"%"
+	newQuery3 := "%"+genre3+"%"
+
+
+	//mengubah masukan tanggal menjadi string dengan format tglMin/tglMax-01-01
 	tglMin := strconv.Itoa(mintahun)+"-01-01"
-	//tglMax := strconv.Itoa(maxtahun)+"-01-01"
-	/*rows, err := db.Query("SELECT * FROM film where Rating >= \" + minimum + \" and Genre like \"" + newQuery + "\" and Tanggal_Tayang >= \"" + tglMin + "\" and Tanggal_Tayang <= \"" + tglMax + "\"  ")*/
-	rows, err := db.Query("SELECT * FROM film where Rating >= ? and Tanggal_Tayang >= \"" + tglMin + "\"  and Genre like \"" + newQuery + "\" ",minimum)
+	tglMax := strconv.Itoa(maxtahun)+"-01-01"
+
+	rows, err := db.Query("Select * from film where Rating=10")
+
+	
+		if (mintahun==0) {
+			if (maxtahun==0) {
+
+				rows, err = db.Query("SELECT * FROM film where Rating >= ? and Genre like \"" + newQuery + "\" and Genre like \"" + newQuery2 + "\" and Genre like \"" + newQuery3 + "\"",minimum)
+
+			} else if (maxtahun>mintahun) {
+
+				rows, err = db.Query("SELECT * FROM film where Rating >= ? and Tanggal_Tayang <= \"" + tglMax + "\" and Genre like \"" + newQuery + "\" and Genre like \"" + newQuery2 + "\" and Genre like \"" + newQuery3 + "\" ",minimum)
+
+			}
+
+		} else if (mintahun>0) {
+
+			if (maxtahun==0) {
+
+				rows, err = db.Query("SELECT * FROM film where Rating >= ? and Tanggal_Tayang >= \"" + tglMin + "\"  and Genre like \"" + newQuery + "\" and Genre like \"" + newQuery2 + "\" and Genre like \"" + newQuery3 + "\"",minimum)
+
+			} else {
+
+				rows, err = db.Query("SELECT * FROM film where Rating >= ? and Tanggal_Tayang >= \"" + tglMin + "\"  and Tanggal_Tayang <= \"" + tglMax + "\" and Genre like \"" + newQuery + "\" and Genre like \"" + newQuery2 + "\" and Genre like \"" + newQuery3 + "\" ",minimum)
+			}
+
+		} 
+	
+	
+
+
 	if err!= nil {
 		log.Fatal(err)
 	}
@@ -56,6 +88,7 @@ func IsAuthentic( minimum int, mintahun int, maxtahun int, genre1 string, genre2
         if err != nil {
                 log.Fatal(err)
         }
+    //this.serveJSON()
     return x
 }
 
